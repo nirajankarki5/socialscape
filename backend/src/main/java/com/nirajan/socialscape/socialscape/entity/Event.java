@@ -3,6 +3,7 @@ package com.nirajan.socialscape.socialscape.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -41,6 +42,10 @@ public class Event {
     @Column(name = "category",
             columnDefinition = "ENUM('Business', 'Food & Drink', 'Health', 'Music', 'Charity & Causes', 'Community', 'Family & Education', 'Fashion', 'Film & Media', 'Home & Lifestyle', 'Science & Tech', 'Sports & Fitness', 'Travel & Outdoor')")
     private Category category;
+
+    // adding field for Bi-directional OneToMany with Booking
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Booking> bookings;
 
     // constructors
     public Event() {}
@@ -126,5 +131,13 @@ public class Event {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }

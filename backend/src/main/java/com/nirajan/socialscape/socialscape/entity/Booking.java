@@ -21,6 +21,11 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable=false)
     private User user;
 
+    // for events
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
+
     // constructors
 
     public Booking() {}
