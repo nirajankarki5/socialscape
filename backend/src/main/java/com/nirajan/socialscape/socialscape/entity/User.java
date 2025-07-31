@@ -21,6 +21,11 @@ public class User {
     @Column(name="role", nullable = false)
     private Role role;
 
+    // adding field for Bi-directional relationship
+    // mappedBy ----> user property in UserDetail class
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserDetail userDetail;
+
 
     // Constructors
     public User(){}
@@ -32,6 +37,14 @@ public class User {
     }
 
     // Getters and Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -55,6 +68,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 
     // toString()
