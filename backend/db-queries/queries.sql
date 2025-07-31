@@ -12,6 +12,15 @@ CREATE TABLE IF NOT EXISTS users(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE IF NOT EXISTS user_details(
+	id INT NOT NULL AUTO_INCREMENT,
+    interests JSON,
+    user_id INT NOT NULL,
+    
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
 -- DROP TABLE IF EXISTS events;
 
 CREATE TABLE IF NOT EXISTS events(
@@ -27,6 +36,10 @@ CREATE TABLE IF NOT EXISTS events(
     PRIMARY KEY(id)
     
 ) ENGINE=InnoDB AUTO_INCREMENT=1000;
+
+-- add a column in events
+ALTER TABLE events
+ADD COLUMN category ENUM('Business', 'Food & Drink', 'Health', 'Music', 'Charity & Causes', 'Community', 'Family & Education', 'Fashion', 'Film & Media', 'Home & Lifestyle', 'Science & Tech', 'Sports & Fitness', 'Travel & Outdoor');
 
 -- Booking table for many-to-many relationship between users and events
 -- DROP TABLE IF EXISTS bookings;
