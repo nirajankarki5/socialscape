@@ -3,6 +3,7 @@ package com.nirajan.socialscape.socialscape.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,14 +51,14 @@ public class Event {
     // constructors
     public Event() {}
 
-    public Event(String title, String description, LocalDateTime startTime, LocalDateTime endTime, String location, Status status, LocalDateTime createdAt, Category category) {
+    public Event(String title, String description, LocalDateTime startTime, LocalDateTime endTime, String location, Status status, Category category) {
         this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
         this.status = status;
-        this.createdAt = createdAt;
+//        this.createdAt = createdAt;
         this.category = category;
     }
 
@@ -140,4 +141,35 @@ public class Event {
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
     }
+
+    // adding convenience methods for bi-directional relationship
+    public void addBooking(Booking booking) {
+        if(bookings == null) {
+            bookings = new ArrayList<>();
+        }
+        bookings.add(booking);
+        booking.setEvent(this);
+    }
+
+    // Implement equals and hashCode methods in Booking (preferably based on immutable unique fields or id after persisted) to
+    // avoid issues when dealing with collections.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Booking)) return false;
+        Booking booking = (Booking) o;
+        return id != 0 && id == booking.getId(); // only compare if id is assigned
+    }
+
+    @Override
+    public int hashCode() {
+        return id != 0 ? Integer.hashCode(id) : super.hashCode();
+    }
+
+    /*
+    - equals returns true only if the two objects are of the same class and have the same non-zero id.
+    - If the id is zero (meaning the entity is transient/not yet persisted), equals returns false unless it is the exact same instance (this == o).
+    - The hashCode uses the id if available; otherwise falls back on Object.hashCode() (which is usually OK for transient entities).
+    - This implementation assumes the entity’s identity is its database-generated ID.
+     */
 }
