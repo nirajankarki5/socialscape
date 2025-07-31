@@ -2,6 +2,9 @@ package com.nirajan.socialscape.socialscape.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -25,6 +28,10 @@ public class User {
     // mappedBy ----> user property in UserDetail class
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
+
+    // adding field for Bi-directional OneToMany with Booking
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Booking> bookings;
 
 
     // Constructors
@@ -76,6 +83,23 @@ public class User {
 
     public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    // adding convenience methods for bi-directional relationship
+    public void addBooking(Booking booking) {
+        if(bookings == null) {
+            bookings = new ArrayList<>();
+        }
+        bookings.add(booking);
+        booking.setUser(this);
     }
 
     // toString()
