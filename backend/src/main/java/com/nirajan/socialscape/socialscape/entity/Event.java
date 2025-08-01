@@ -48,6 +48,13 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Booking> bookings;
 
+    // Event is the OWNING SIDE
+    // Tag is the inverse/non-owning side
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(name = "event_tags", joinColumns = @JoinColumn(name = "event_id"),
+                                    inverseJoinColumns = @JoinColumn(name = "tags_id"))
+    private List<Tag> tags;
+
     // constructors
     public Event() {}
 
@@ -142,6 +149,15 @@ public class Event {
         this.bookings = bookings;
     }
 
+    // many to many relationship
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     // adding convenience methods for bi-directional relationship
     public void addBooking(Booking booking) {
         if(bookings == null) {
@@ -149,6 +165,14 @@ public class Event {
         }
         bookings.add(booking);
         booking.setEvent(this);
+    }
+
+    // adding convenience methids for tags
+    public void addTag(Tag tag) {
+        if(tags == null) {
+            tags = new ArrayList<>();
+        }
+        tags.add(tag);
     }
 
     // Implement equals and hashCode methods in Booking (preferably based on immutable unique fields or id after persisted) to
