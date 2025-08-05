@@ -1,5 +1,6 @@
 package com.nirajan.socialscape.socialscape.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Tag {
 
     // mappedBy ----> tags property in Event entity
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonBackReference // is applied on the back (mappedBy) side, Bidirectional @ManyToMany relationships cause infinite recursion (events -> tags -> events -> tags ...)
     private List<Event> events;
 
     // constructors

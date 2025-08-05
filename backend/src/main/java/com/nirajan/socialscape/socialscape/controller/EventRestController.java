@@ -2,11 +2,16 @@ package com.nirajan.socialscape.socialscape.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nirajan.socialscape.socialscape.dto.EventRequest;
+import com.nirajan.socialscape.socialscape.entity.Category;
 import com.nirajan.socialscape.socialscape.entity.Event;
+import com.nirajan.socialscape.socialscape.entity.Tag;
 import com.nirajan.socialscape.socialscape.service.event.EventService;
+import com.nirajan.socialscape.socialscape.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +39,9 @@ public class EventRestController {
     }
 
     @PostMapping("/events")
-    public Event addEvent(@RequestBody Event event) {
-        // just in case they pass id in JSON, set id to 0
-        // to force insert new item, instead of updating
-        event.setId(0);
-        return eventService.save(event);
+    public Event addEvent(@RequestBody EventRequest request) {
+        Event savedEvent = eventService.save(request);
+        return savedEvent;
     }
 
     @PatchMapping("/events/{id}")

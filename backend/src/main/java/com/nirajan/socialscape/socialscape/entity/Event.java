@@ -1,5 +1,6 @@
 package com.nirajan.socialscape.socialscape.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -56,6 +57,7 @@ public class Event {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "event_tags", joinColumns = @JoinColumn(name = "event_id"),
                                     inverseJoinColumns = @JoinColumn(name = "tags_id"))
+    @JsonManagedReference //is applied on the forward part of the relationship
     private List<Tag> tags;
 
     // constructors
