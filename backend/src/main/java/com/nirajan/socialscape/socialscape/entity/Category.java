@@ -32,7 +32,7 @@ public enum Category {
     // Optional: to get enum from string value
     /*
     allows you to find and return the enum constant that matches a given label string.
-    For example, if the database contains "Food & Drink", calling EventCategory.fromLabel("Food & Drink") returns EventCategory.FOOD_DRINK.
+    For example, if the database contains "Food & Drink", calling Category.fromLabel("Food & Drink") returns EventCategory.FOOD_DRINK.
     If no matching label is found, it throws an IllegalArgumentException.
      */
 

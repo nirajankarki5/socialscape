@@ -1,6 +1,7 @@
 package com.nirajan.socialscape.socialscape.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,13 +36,12 @@ public class Event {
     @Column(name = "status", columnDefinition = "ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING'")
     private Status status = Status.PENDING;
 
-    @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT current_timestamp", updatable = false, insertable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // columnDefinition is optional
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category",
-            columnDefinition = "ENUM('Business', 'Food & Drink', 'Health', 'Music', 'Charity & Causes', 'Community', 'Family & Education', 'Fashion', 'Film & Media', 'Home & Lifestyle', 'Science & Tech', 'Sports & Fitness', 'Travel & Outdoor')")
+    @Convert(converter = CategoryConverter.class)
+    @Column(name = "category")
     private Category category;
 
     @Column(name = "image")
