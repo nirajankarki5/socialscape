@@ -44,6 +44,9 @@ public class Event {
             columnDefinition = "ENUM('Business', 'Food & Drink', 'Health', 'Music', 'Charity & Causes', 'Community', 'Family & Education', 'Fashion', 'Film & Media', 'Home & Lifestyle', 'Science & Tech', 'Sports & Fitness', 'Travel & Outdoor')")
     private Category category;
 
+    @Column(name = "image")
+    private String image;
+
     // adding field for Bi-directional OneToMany with Booking
     @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Booking> bookings;
@@ -58,7 +61,7 @@ public class Event {
     // constructors
     public Event() {}
 
-    public Event(String title, String description, LocalDateTime startTime, LocalDateTime endTime, String location, Status status, Category category) {
+    public Event(String title, String description, LocalDateTime startTime, LocalDateTime endTime, String location, Status status, Category category, String image) {
         this.title = title;
         this.description = description;
         this.startTime = startTime;
@@ -67,6 +70,7 @@ public class Event {
         this.status = status;
 //        this.createdAt = createdAt;
         this.category = category;
+        this.image = image;
     }
 
     // getters and setters
@@ -139,6 +143,14 @@ public class Event {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<Booking> getBookings() {

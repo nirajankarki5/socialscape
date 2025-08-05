@@ -41,6 +41,9 @@ CREATE TABLE IF NOT EXISTS events(
 ALTER TABLE events
 ADD COLUMN category ENUM('Business', 'Food & Drink', 'Health', 'Music', 'Charity & Causes', 'Community', 'Family & Education', 'Fashion', 'Film & Media', 'Home & Lifestyle', 'Science & Tech', 'Sports & Fitness', 'Travel & Outdoor');
 
+ALTER TABLE events
+ADD COLUMN image VARCHAR(512);
+
 -- Booking table for many-to-many relationship between users and events
 -- DROP TABLE IF EXISTS bookings;
 
