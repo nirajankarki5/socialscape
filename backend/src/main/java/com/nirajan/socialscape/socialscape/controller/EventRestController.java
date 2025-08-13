@@ -9,6 +9,7 @@ import com.nirajan.socialscape.socialscape.entity.Tag;
 import com.nirajan.socialscape.socialscape.service.event.EventService;
 import com.nirajan.socialscape.socialscape.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class EventRestController {
         this.objectMapper = objectMapper;
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/events")
     public List<Event> getAllEvents() {
         return eventService.findAll();

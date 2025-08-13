@@ -2,27 +2,38 @@ package com.nirajan.socialscape.socialscape.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
+    private final JwtUtil jwtUtil;
+
+    public SecurityConfig(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer ->
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(configurer ->
                 configurer
+                        // Public endpoints (login, signup)
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/events/**").permitAll()
-                        .anyRequest().authenticated() //allow signup/login without authentication
+                        // Role-based endpoints
+                        .requestMatchers("/api/events/**").hasAuthority("USER")
+                        // All other endpoints require authentication
+                        .anyRequest().authenticated()
         );
 
-        // use http basic authentication
-        http.httpBasic(Customizer.withDefaults());
+        // Add JWT filter
+        http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        // disable CSRF(Cross Site Request Frogery)
-        http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }
