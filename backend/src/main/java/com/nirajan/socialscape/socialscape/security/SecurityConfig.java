@@ -12,7 +12,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
-                configurer.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated() //allow signup/login without authentication
+                configurer
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/events/**").permitAll()
+                        .anyRequest().authenticated() //allow signup/login without authentication
         );
 
         // use http basic authentication
