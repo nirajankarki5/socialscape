@@ -26,6 +26,7 @@ public class SecurityConfig {
                         // Public endpoints (login, signup)
                         .requestMatchers("/api/auth/**").permitAll()
                         // Role-based endpoints
+                        // (if you are using @PreAuthorize("hasAuthority('USER')") in rest controller, do not add endpoints here)
                         .requestMatchers("/api/events/**").hasAuthority("USER")
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
