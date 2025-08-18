@@ -44,6 +44,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                // Authentication.getName() will give you the email from the token (in Service).
             }
         }
 

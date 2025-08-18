@@ -27,12 +27,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         // Role-based endpoints
                         // (if you are using @PreAuthorize("hasAuthority('USER')") in rest controller, do not add endpoints here)
-                        .requestMatchers("/api/events/**").hasAuthority("USER")
+                        .requestMatchers("/api/user/**").hasAnyAuthority("USER", "ORGANIZER", "ADMIN")
+                        .requestMatchers("/api/events/**").permitAll()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
         );
 
-        // Add JWT filter
+        // Add JWT Auth filter
         http.addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
